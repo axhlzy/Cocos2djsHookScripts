@@ -85,17 +85,25 @@ export const listFunctions = (partOfExpName: string) => {
 }
 
 const iteratorExpFunctions = (name: string, callback: (item: ModuleExportDetails) => void, l_soName: string = soName) => {
+    let count = 0
     Process.findModuleByName(l_soName)!.enumerateExports().forEach((exp: ModuleExportDetails) => {
-        if (exp.type == "function" && exp.name.toLowerCase().indexOf(name.toLowerCase()) != -1) callback(exp)
+        if (exp.type == "function" && exp.name.toLowerCase().indexOf(name.toLowerCase()) != -1) {
+            callback(exp)
+            ++count
+        }
     })
+    LOGD(`Found ${count} functions`)
 }
 
 globalThis.getExportFromName = getExportFromName
-globalThis.HookFunctions = HookFunctions
+globalThis.HookExpFunctions = HookFunctions
 globalThis.listFunctions = listFunctions
 
+globalThis.d = () => Interceptor.detachAll()
+
 declare global {
+    var d: () => void
     var getExportFromName: (name: string) => NativePointer
-    var HookFunctions: (partOfExpName: string) => void
+    var HookExpFunctions: (partOfExpName: string) => void
     var listFunctions: (partOfExpName: string) => void
 }

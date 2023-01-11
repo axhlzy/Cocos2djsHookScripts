@@ -52,8 +52,19 @@ const attachNative = (mPtr: ARGM, mOnEnter?: OnEnterType, mOnLeave?: OnExitType,
     if (needRecord) map_attach_listener.set(String(mPtr), Listener)
 }
 
+const nop = (mPtr: NativePointer | number) => {
+    if (typeof mPtr == "number") mPtr = ptr(mPtr)
+    if (mPtr instanceof NativePointer && mPtr.isNull()) return
+    mPtr = Module.findBaseAddress(soName)!.add(mPtr)
+    Interceptor.replace(mPtr, new NativeCallback(() => {
+        LOGD(`called NopFunction ${mPtr}`)
+    }, 'void', []))
+}
+
 globalThis.A = attachNative
+globalThis.n = nop
 
 declare global {
     var A: (mPtr: NativePointer | number, mOnEnter?: OnEnterType, mOnLeave?: OnExitType, needRecord?: boolean) => void
+    var n: (mPtr: NativePointer | number) => void
 }
