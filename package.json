@@ -13,5 +13,8 @@
     "@types/frida-gum": "^18.1.0",
     "@types/node": "^18.0.6",
     "frida-compile": "^10.2.5"
+  },
+  "dependencies": {
+    "jnitrace-engine": "^1.1.0"
   }
 }

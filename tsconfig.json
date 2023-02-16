@@ -10,7 +10,7 @@
     "allowJs": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "strict": true,
+    "strict": false,
     "removeComments": true
   }
 }

@@ -1,3 +1,4 @@
+import { json } from "node:stream/consumers"
 import { soName } from "./cocos"
 
 export function callFunction(value: number | NativePointer, ..._args: any[]): NativePointer {
@@ -60,6 +61,74 @@ const nop = (mPtr: NativePointer | number) => {
         LOGD(`called NopFunction ${mPtr}`)
     }, 'void', []))
 }
+
+
+Java.perform(() => {
+
+    var Utils = Java.use("com.applovin.mediation.unity.Utils")
+    Utils.retrieveSdkKey.overload().implementation = function () {
+        let ret = this.retrieveSdkKey()
+        console.log(ret)
+        return ret
+    }
+
+    // var MaxRewardedAd = Java.use("com.applovin.mediation.ads.MaxRewardedAd")
+    // MaxRewardedAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+    //     console.log("MaxRewardedAd init")
+    //     return this.$init.apply(this, arguments)
+    // }
+
+    // var MaxRewardedInterstitialAd = Java.use("com.applovin.mediation.ads.MaxRewardedInterstitialAd")
+    // MaxRewardedInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+    //     console.log("MaxRewardedInterstitialAd init")
+    //     return this.$init.apply(this, arguments)
+    // }
+
+    // var MaxInterstitialAd = Java.use("com.applovin.mediation.ads.MaxInterstitialAd")
+    // MaxInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+    //     console.log("MaxInterstitialAd init")
+    //     return this.$init.apply(this, arguments)
+    // }
+
+    // var MaxAdView = Java.use("com.applovin.mediation.ads.MaxAdView")
+    // MaxAdView.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+    //     console.log("MaxAdView init")
+    //     return this.$init.apply(this, arguments)
+    // }
+
+    hookAllOverloads("com.applovin.mediation.ads.MaxAdView", "$init")
+    hookAllOverloads("com.applovin.mediation.ads.MaxInterstitialAd", "$init")
+    hookAllOverloads("com.applovin.mediation.ads.MaxRewardedInterstitialAd", "$init")
+    hookAllOverloads("com.applovin.mediation.ads.MaxRewardedAd", "$init")
+})
+
+function hookAllOverloads(targetClass, targetMethod) {
+    Java.perform(function () {
+        var targetClassMethod = targetClass + '.' + targetMethod;
+        var hook = Java.use(targetClass);
+        var overloadCount = hook[targetMethod].overloads.length;
+        console.log("watch" + targetClass + targetMethod);
+
+        for (var i = 0; i < overloadCount; i++) {
+            hook[targetMethod].overloads[i].implementation = function () {
+                // 打印出参数类型 以及参数个数
+                var types = this.argumentTypes;
+                for (var j = 0; j < types.length; j++) {
+                    console.log("arg" + j + " type:" + types[j]);
+                }
+                console.log("\n" + targetClassMethod + " args" + arguments.length + " with: " + JSON.stringify(arguments));
+                var retval = this[targetMethod].apply(this, arguments);
+                PrintStackTrace()
+                return retval;
+            }
+        }
+    });
+}
+
+var PrintStackTrace = () => console.log(GetStackTrace())
+
+var GetStackTrace = () => Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Throwable").$new())
+
 
 globalThis.A = attachNative
 globalThis.n = nop
