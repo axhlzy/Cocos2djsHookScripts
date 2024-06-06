@@ -63,44 +63,44 @@ const nop = (mPtr: NativePointer | number) => {
 }
 
 
-Java.perform(() => {
+// Java.perform(() => {
 
-    var Utils = Java.use("com.applovin.mediation.unity.Utils")
-    Utils.retrieveSdkKey.overload().implementation = function () {
-        let ret = this.retrieveSdkKey()
-        console.log(ret)
-        return ret
-    }
+//     var Utils = Java.use("com.applovin.mediation.unity.Utils")
+//     Utils.retrieveSdkKey.overload().implementation = function () {
+//         let ret = this.retrieveSdkKey()
+//         console.log(ret)
+//         return ret
+//     }
 
-    // var MaxRewardedAd = Java.use("com.applovin.mediation.ads.MaxRewardedAd")
-    // MaxRewardedAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
-    //     console.log("MaxRewardedAd init")
-    //     return this.$init.apply(this, arguments)
-    // }
+//     // var MaxRewardedAd = Java.use("com.applovin.mediation.ads.MaxRewardedAd")
+//     // MaxRewardedAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+//     //     console.log("MaxRewardedAd init")
+//     //     return this.$init.apply(this, arguments)
+//     // }
 
-    // var MaxRewardedInterstitialAd = Java.use("com.applovin.mediation.ads.MaxRewardedInterstitialAd")
-    // MaxRewardedInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
-    //     console.log("MaxRewardedInterstitialAd init")
-    //     return this.$init.apply(this, arguments)
-    // }
+//     // var MaxRewardedInterstitialAd = Java.use("com.applovin.mediation.ads.MaxRewardedInterstitialAd")
+//     // MaxRewardedInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+//     //     console.log("MaxRewardedInterstitialAd init")
+//     //     return this.$init.apply(this, arguments)
+//     // }
 
-    // var MaxInterstitialAd = Java.use("com.applovin.mediation.ads.MaxInterstitialAd")
-    // MaxInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
-    //     console.log("MaxInterstitialAd init")
-    //     return this.$init.apply(this, arguments)
-    // }
+//     // var MaxInterstitialAd = Java.use("com.applovin.mediation.ads.MaxInterstitialAd")
+//     // MaxInterstitialAd.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+//     //     console.log("MaxInterstitialAd init")
+//     //     return this.$init.apply(this, arguments)
+//     // }
 
-    // var MaxAdView = Java.use("com.applovin.mediation.ads.MaxAdView")
-    // MaxAdView.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
-    //     console.log("MaxAdView init")
-    //     return this.$init.apply(this, arguments)
-    // }
+//     // var MaxAdView = Java.use("com.applovin.mediation.ads.MaxAdView")
+//     // MaxAdView.$init.overload('java.lang.String', 'com.applovin.sdk.AppLovinSdk').implementation = function () {
+//     //     console.log("MaxAdView init")
+//     //     return this.$init.apply(this, arguments)
+//     // }
 
-    hookAllOverloads("com.applovin.mediation.ads.MaxAdView", "$init")
-    hookAllOverloads("com.applovin.mediation.ads.MaxInterstitialAd", "$init")
-    hookAllOverloads("com.applovin.mediation.ads.MaxRewardedInterstitialAd", "$init")
-    hookAllOverloads("com.applovin.mediation.ads.MaxRewardedAd", "$init")
-})
+//     hookAllOverloads("com.applovin.mediation.ads.MaxAdView", "$init")
+//     hookAllOverloads("com.applovin.mediation.ads.MaxInterstitialAd", "$init")
+//     hookAllOverloads("com.applovin.mediation.ads.MaxRewardedInterstitialAd", "$init")
+//     hookAllOverloads("com.applovin.mediation.ads.MaxRewardedAd", "$init")
+// })
 
 function hookAllOverloads(targetClass, targetMethod) {
     Java.perform(function () {
